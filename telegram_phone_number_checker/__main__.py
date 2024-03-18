@@ -1,18 +1,21 @@
-import os
 import json
+import os
 import re
-from telethon.sync import TelegramClient, errors, functions
-from telethon.tl.types import InputPhoneContact
-from dotenv import load_dotenv
 from getpass import getpass
+
 import click
+from dotenv import load_dotenv
+from telethon.sync import errors
+from telethon.sync import functions
+from telethon.sync import TelegramClient
+from telethon.tl.types import InputPhoneContact
 
 
 load_dotenv()
 
 
 def get_names(client: TelegramClient, phone_number: str) -> dict:
-    """Take in a phone number and returns the associated user information if the user exists.
+    """Take a phone number and return the associated user information if the user exist.
 
     It does so by first adding the user's phones to the contact list, retrieving the
     information, and then deleting the user from the contact list.
@@ -178,11 +181,10 @@ def show_results(output: str, res: dict) -> None:
     show_default=True,
     type=str,
 )
-def main_entrypoint(
+def main(
     phone_numbers: str, api_id: str, api_hash: str, api_phone_number: str, output: str
-) -> None:
-    """
-    Check to see if one or more phone numbers belong to a valid Telegram account.
+) -> int:
+    r"""Check to see if one or more phone numbers belong to a valid Telegram account.
 
     \b
     Prerequisites:
@@ -215,7 +217,8 @@ def main_entrypoint(
     client = login(api_id, api_hash, api_phone_number)
     res = validate_users(client, phone_numbers)
     show_results(output, res)
+    return 0
 
 
 if __name__ == "__main__":
-    main_entrypoint()
+    SystemExit(main())
